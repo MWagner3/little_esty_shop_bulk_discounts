@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "merchant bulk discounts index" do
+describe "merchant bulk discounts show page" do
   before :each do
     @merchant1 = Merchant.create!(name: 'Hair Care')
     @merchant2 = Merchant.create!(name: 'Jewelry')
@@ -57,18 +57,11 @@ describe "merchant bulk discounts index" do
     @discount4 = @merchant2.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 5)
     @discount5 = @merchant2.bulk_discounts.create!(percentage_discount: 40, quantity_threshold: 10)
     @discount6 = @merchant2.bulk_discounts.create!(percentage_discount: 60, quantity_threshold: 15)
-    visit "/merchant/#{@merchant1.id}/bulk_discounts"
+    visit "/merchant/#{@merchant1.id}/bulk_discounts/#{@discount1.id}"
   end
 
-  it 'shows all the discounts and their quantity threshold and percentage discounts' do
-   within("#discount-#{@discount1.id}") do
-     expect(page).to have_content("Quantity Threshold: #{@discount1.quantity_threshold}")
-     expect(page).to have_content("Percentage Discount: #{@discount1.percentage_discount}")
-     expect(page).to have_content("Link to discount page: Bulk Discount id# #{@discount1.id}")
-
-     click_link "Bulk Discount id# #{@discount1.id}"
-
-     expect(current_path).to eq("/merchant/#{@merchant1.id}/bulk_discounts/#{@discount1.id}")
-   end
-end
+  it "shows a discount's percentage discount and item threshold'" do
+    expect(page).to have_content("Percent Discounted: #{@discount1.percentage_discount}")
+    expect(page).to have_content("Item Threshold: #{@discount1.quantity_threshold}")
+  end
 end
