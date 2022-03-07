@@ -57,11 +57,11 @@ describe "merchant bulk discounts show page" do
     @discount4 = @merchant2.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 5)
     @discount5 = @merchant2.bulk_discounts.create!(percentage_discount: 40, quantity_threshold: 10)
     @discount6 = @merchant2.bulk_discounts.create!(percentage_discount: 60, quantity_threshold: 15)
-    visit "/merchant/#{@merchant1.id}/discounts/#{@discount1.id}"
+    visit "/merchant/#{@merchant1.id}/bulk_discounts/#{@discount1.id}"
   end
 
   it "shows a discount's percentage discount and item threshold'" do
-    expect(page).to have_content("Percent Discounted: #{@bulk_1.percentage_discount}")
-    expect(page).to have_content("Item Threshold: #{@bulk_1.quantity_threshold}")
+    expect(page).to have_content("Percent Discounted: #{@discount1.percentage_discount}")
+    expect(page).to have_content("Item Threshold: #{@discount1.quantity_threshold}")
   end
 end

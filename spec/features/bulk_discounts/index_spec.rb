@@ -68,7 +68,7 @@ describe "merchant bulk discounts index" do
 
      click_link "Bulk Discount id# #{@discount1.id}"
 
-     expect(current_path).to eq("/merchant/#{@merchant1.id}/discounts/#{@discount1.id}")
+     expect(current_path).to eq("/merchant/#{@merchant1.id}/bulk_discounts/#{@discount1.id}")
    end
 end
 end
