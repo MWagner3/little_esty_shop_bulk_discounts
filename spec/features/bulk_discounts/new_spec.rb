@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "merchant bulk discounts index" do
+describe "merchant bulk discounts new" do
   before :each do
     @merchant1 = Merchant.create!(name: 'Hair Care')
     @merchant2 = Merchant.create!(name: 'Jewelry')
@@ -57,25 +57,24 @@ describe "merchant bulk discounts index" do
     @discount4 = @merchant2.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 5)
     @discount5 = @merchant2.bulk_discounts.create!(percentage_discount: 40, quantity_threshold: 10)
     @discount6 = @merchant2.bulk_discounts.create!(percentage_discount: 60, quantity_threshold: 15)
-    visit "/merchant/#{@merchant1.id}/bulk_discounts"
+    visit "/merchant/#{@merchant1.id}/bulk_discounts/new"
   end
 
-  it 'shows all the discounts and their quantity threshold and percentage discounts' do
-   within("#discount-#{@discount1.id}") do
-     expect(page).to have_content("Quantity Threshold: #{@discount1.quantity_threshold}")
-     expect(page).to have_content("Percentage Discount: #{@discount1.percentage_discount}")
-     expect(page).to have_content("Link to discount page: Bulk Discount id# #{@discount1.id}")
-
-     click_link "Bulk Discount id# #{@discount1.id}"
-
-     expect(current_path).to eq("/merchant/#{@merchant1.id}/bulk_discounts/#{@discount1.id}")
-   end
- end
-
-  it 'can create new discount' do
-
-    expect(page).to have_link('Create New Discount')
-    click_link('Create New Discount')
-    expect(current_path).to eq("/merchant/#{@merchant1.id}/bulk_discounts/new")
+  it 'has a form to create new discount' do
+    expect(page).to have_content('Quantity Threshold')
+    expect(page).to have_content('Percentage Discount')
   end
+
+  it 'after form is submitted it routes to index page where new discount will be shown' do
+    
+    fill_in("Percentage Discount", with: 90)
+    fill_in("Quantity Threshold", with: 100)
+    click_button("Save")
+    expect(current_path).to eq("/merchant/#{@merchant1.id}/bulk_discounts")
+    expect(page).to have_content("Quantity Threshold: 100")
+    expect(page).to have_content("Percentage Discount: 90")
+
+  end
+
+
 end
