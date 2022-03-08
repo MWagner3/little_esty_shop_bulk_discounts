@@ -78,4 +78,14 @@ describe "merchant bulk discounts index" do
     click_link('Create New Discount')
     expect(current_path).to eq("/merchant/#{@merchant1.id}/bulk_discounts/new")
   end
+
+  it 'shows a link to delete each discount, when clicked, redirect to index where it will no longer be' do
+
+    within "#discount-#{@discount1.id}" do
+      click_button 'Delete Discount'
+    end
+      expect(current_path).to eq("/merchant/#{@merchant1.id}/bulk_discounts")
+      expect(page).to_not have_content(@discount1)
+      
+  end
 end
