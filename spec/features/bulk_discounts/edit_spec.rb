@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "merchant bulk discounts show page" do
+describe "merchant bulk discounts edit page" do
   before :each do
     @merchant1 = Merchant.create!(name: 'Hair Care')
     @merchant2 = Merchant.create!(name: 'Jewelry')
@@ -57,18 +57,18 @@ describe "merchant bulk discounts show page" do
     @discount4 = @merchant2.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 5)
     @discount5 = @merchant2.bulk_discounts.create!(percentage_discount: 40, quantity_threshold: 10)
     @discount6 = @merchant2.bulk_discounts.create!(percentage_discount: 60, quantity_threshold: 15)
-    visit "/merchant/#{@merchant1.id}/bulk_discounts/#{@discount1.id}"
+    visit "/merchant/#{@merchant1.id}/bulk_discounts/#{@discount1.id}/edit"
   end
 
-  it "shows a discount's percentage discount and item threshold'" do
-    expect(page).to have_content("Percent Discounted: #{@discount1.percentage_discount}")
-    expect(page).to have_content("Item Threshold: #{@discount1.quantity_threshold}")
-  end
-
-  it 'has link to edit page' do
-    expect(page).to have_link("Edit")
-    click_link("Edit")
-    expect(current_path).to eq("/merchant/#{@merchant1.id}/bulk_discounts/#{@discount1.id}/edit")
+  it 'I see attributes are pre-populated, I update any/all info and go back to show page, attributes are updated' do
+    expect(page).to have_field(:percentage_discount, with: @discount1.percentage_discount)
+    expect(page).to have_field(:quantity_threshold, with: @discount1.quantity_threshold)
+    fill_in(:percentage_discount, with: 30)
+    fill_in(:quantity_threshold, with: 3)
+    click_button("Submit")
+    expect(current_path).to eq("/merchant/#{@merchant1.id}/bulk_discounts/#{@discount1.id}")
+    expect(page).to have_content("Percent Discounted: 30")
+    expect(page).to have_content("Item Threshold: 3")
   end
 
 
